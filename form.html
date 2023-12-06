@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,700;0,900;1,100;1,200;1,400;1,700;1,900&display=swap');
+
+        body {
+            background-color: #324158;
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .left {
+            float: left;
+        }
+
+        .clear {
+            clear: both;
+        }
+
+        div {
+            margin: 10px;
+            background-color: #324158;
+            color: white;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        form {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn {
+            text-align: center;
+            width: 100%;
+            border-radius: 5px;
+            background-color: #1b6ae2;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #1c4d96;
+        }
+
+        .f1 {
+            background-color: #475d7e;
+            color: white;
+            height: 30px;
+            border-radius: 5px;
+            border: 0;
+            padding: 5px;
+        }
+
+        .Cbox {
+            width: 22px;
+        }
+
+        .Cbox-text {
+            font-size: 8px;
+        }
+
+        #totalForm {
+            width: 420px;
+            border: 2px solid white;
+            border-radius: 15px;
+        }
+
+        .prop select {
+            background-color: #475d7e;
+            color: #ffffff;
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+        }
+    </style>
+    <script src="https://unpkg.com/pdf-lib@1.11.0"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+</head>
+
+<body>
+    <!-- TOTAL FORM START HERE -->
+    <div id="totalForm">
+        <h2>Get Offering Memorandum</h2>
+        <form id="pdf-form">
+            <div>
+                <div class="prop">
+                    <label for="porperties"></label>
+                    <select id="property" name="properties">
+                        <option value="inverness">Green Dragon</option>
+                        <option value="muv">MUV Dispensary</option>
+                        <option value="mavis">Mavis Tires &amp; Brakes</option>
+                        <option value="take5">Take 5 Oil Change</option>
+                        <option value="cookies">Cookies</option>
+                        <option value="greendragon">Green Dragon</option>
+                        <option value="7-eleven">7-Eleven</option>
+                        <option value="rise">Rise Dispensary</option>
+                        <option value="eos">EoS Fitness</option>
+                        <option value="greendragon">Green Dragon</option>
+                        <option value="surterra1">Surterra Wellness</option>
+                        <option value="surterra2">Surterra Wellness</option>
+                        <option value="surterra3">Surterra Wellness</option>
+                        <option value="mattressFirm1">Mattress Firm</option>
+                        <option value="conns">Conn's HomePlus</option>
+                        <option value="mattressFirm2">Mattress Firm</option>
+                    </select>
+                </div>
+                <div class="left">
+                    <label for="fname">Broker First name:</label><br>
+                    <input class="f1" type="text" id="fname" name="fname"><br>
+                </div>
+                <div class="left">
+                    <label for="lname">Broker Last name:</label><br>
+                    <input class="f1" type="text" id="lname" name="lname"><br>
+                </div>
+                <div class="left">
+                    <label for="Bemail">Broker Email:</label><br>
+                    <input class="f1" type="text" id="Bemail" name="Bemail"><br>
+                </div>
+                <div class="left">
+                    <label for="Bphone">Broker Phone:</label><br>
+                    <input class="f1" type="text" id="Bphone" name="Bphone"><br>
+                </div>
+                <div class="left">
+                    <label for="CFname">Client First name:</label><br>
+                    <input class="f1" type="text" id="CFname" name="CFname"><br>
+                </div>
+                <div class="left">
+                    <label for="CLname">Client Last name:</label><br>
+                    <input class="f1" type="text" id="CLname" name="CLname"><br>
+                </div>
+                <div class="left">
+                    <label for="Cemail">Client Email:</label><br>
+                    <input class="f1" type="text" id="Cemail" name="Cemail"><br>
+                </div>
+                <div class="left">
+                    <label for="Cphone">Client Phone:</label><br>
+                    <input class="f1" type="text" id="Cphone" name="Cphone"><br>
+                </div>
+                <div class="left">
+                    <label for="Bhouse">Brokerage House:</label><br>
+                    <input class="f1" type="text" id="Bhouse" name="Bhouse"><br>
+                </div>
+                <div>
+                    <input class="Cbox" type="checkbox" id="checkbox" name="checkbox">
+                    <label style="font-size:11;" class="Cbox-text" for="checkbox">By checking this box, I (Broker)
+                        represent
+                        and warrant that all of the above information is complete, true &amp; accurate</label><br>
+                </div>
+                <!-- SUBMIT BUTTON IS HERE -->
+                <div>
+                    <input class="btn" type="submit" value="submit">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const { PDFDocument } = PDFLib
+
+        const formElement = document.getElementById("pdf-form")
+        formElement.addEventListener('submit', function (event) {
+            event.preventDefault();
+            fillForm();
+        })
+
+        async function fillForm() {
+            // Fetch the PDF with form fields
+            const formUrl = 'https://aff6a7c9-b618-4e75-9347-3e0329f0c337.usrfiles.com/ugd/aff6a7_25bb73463b4845d482a409e3736630fc.pdf'
+            const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
+
+            // Load a PDF with form fields
+            const pdfDoc = await PDFDocument.load(formPdfBytes)
+
+            // Get the form containing all the fields
+            const form = pdfDoc.getForm()
+
+            // Get all fields in the PDF by their names
+            const brokerName = form.getTextField('Name')
+            const brokerEmail = form.getTextField('Broker_Email Address')
+            const brokerPhone = form.getTextField('Broker_Phone')
+            const brokerageHouse = form.getTextField('Broker_House')
+            const clientName = form.getTextField('Buyer_Name_Company')
+            const clientEmail = form.getTextField('Buyer Email Contact')
+            const clientPhone = form.getTextField('Buyer Phone')
+            const propertyName = form.getTextField('Property Name')
+
+            // Fill in the fields
+            brokerName.setText(formElement.elements['fname'].value + " " + formElement.elements['lname'].value)
+            brokerEmail.setText(formElement.elements['Bemail'].value)
+            brokerPhone.setText(formElement.elements['Bphone'].value)
+            brokerageHouse.setText(formElement.elements['Bhouse'].value)
+            clientName.setText(formElement.elements['CFname'].value + " " + formElement.elements['CLname'].value)
+            clientEmail.setText(formElement.elements['Cemail'].value)
+            clientPhone.setText(formElement.elements['Cphone'].value)
+            const propertyField = formElement.elements['properties'];
+            propertyName.setText(propertyField.options[propertyField.selectedIndex].text);
+
+            // Serialize the PDFDocument to bytes (a Uint8Array)
+            const pdfBytes = await pdfDoc.save()
+
+            // Trigger the browser to download the PDF document
+            download(pdfBytes, "filled_form.pdf", "application/pdf");
+        }
+    </script>
+</body>
+
+</html>
